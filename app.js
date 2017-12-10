@@ -71,6 +71,16 @@ var budgetController = (function(){
                 percentage: data.percentage
             };
         },
+        deleteItem: function(type, id){
+         var ids, index;
+         ids = data.allItems[type].map(function(current, index, array){
+              return current.id;
+          });
+        index = ids.indexOf(id);
+        //-1 if item is not found
+        if(index !== -1)
+            data.allItems[type].splice(index,1);
+        },
         testing: function(){
             console.log(data);
         }
@@ -158,8 +168,7 @@ var controller = (function(budgetCtrl, UICtrl){
            ctrlAddItem();
        }
     });
-        
-        document.querySelector(DOM.container).addEventListener("click", ctrlDeleteItem);
+    document.querySelector(DOM.container).addEventListener("click", ctrlDeleteItem);
         
         
     }
@@ -188,10 +197,8 @@ var controller = (function(budgetCtrl, UICtrl){
         if(itemID){
             splitID = itemID.split("-");
             type = splitID[0];
-            id = splitID[1];
-            
-            // delete item from data structure
-            
+            id = parseInt(splitID[1]);
+            budgetCtrl.deleteItem(type, id);        
             //update budget
             
             // display budget
